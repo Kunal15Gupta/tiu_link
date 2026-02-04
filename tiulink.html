@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine 💖</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: pink;
+      background-image: radial-gradient(#ff5fa2 20%, transparent 20%);
+      background-size: 50px 50px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px 60px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #ff2f92;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 140px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      position: absolute;
+    }
+
+    #yes {
+      background-color: #ff2f92;
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #no {
+      background-color: #aaa;
+      color: white;
+      left: 10%;
+      top: 80px;
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      animation: floatUp 1.2s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(1.8);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Will you be my Valentine? 💘</h1>
+    <div class="buttons">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 💔</button>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+
+    document.addEventListener("mousemove", (e) => {
+      const yesRect = yesBtn.getBoundingClientRect();
+      const yesCenterX = yesRect.left + yesRect.width / 2;
+      const yesCenterY = yesRect.top + yesRect.height / 2;
+
+      const distance = Math.hypot(
+        e.clientX - yesCenterX,
+        e.clientY - yesCenterY
+      );
+
+      const scale = Math.max(1, 2 - distance / 300);
+      yesBtn.style.transform = `translateX(-50%) scale(${scale})`;
+    });
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    function createHearts(x, y) {
+      for (let i = 0; i < 18; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+
+        const offsetX = (Math.random() - 0.5) * 220 + "px";
+        const offsetY = (Math.random() - 1) * 220 + "px";
+
+        heart.style.left = x + "px";
+        heart.style.top = y + "px";
+        heart.style.setProperty("--x", offsetX);
+        heart.style.setProperty("--y", offsetY);
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 1200);
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      const rect = yesBtn.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+
+      createHearts(x, y);
+
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:pink;
+            font-family:'Comic Sans MS', cursive;
+            text-align:center;
+          ">
+            <h1 style="color:#ff2f92;">
+              Yay!!! 💕🥰<br>
+              Happy Valentine’s Day ❤️
+            </h1>
+          </div>
+        `;
+      }, 800);
+    });
+  </script>
+</body>
+</html>
